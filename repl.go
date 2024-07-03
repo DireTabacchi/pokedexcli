@@ -7,12 +7,23 @@ import (
     "strings"
 )
 
+type cliCommand struct {
+    name string
+    description string
+    callback func(*dexState) error
+}
+
+type dexState struct {
+    mapState mapState
+}
+
 func startRepl() {
     reader := bufio.NewScanner(os.Stdin)
+    var curState dexState
     for {
         prompt()
         reader.Scan()
-        // READ
+
         comArgs := normalizeInput(reader.Text())
 
         if len(comArgs) == 0 {
@@ -24,7 +35,7 @@ func startRepl() {
         command, exists := getCommands()[comName]
 
         if exists {
-            err := command.callback()
+            err := command.callback(&curState)
             if err != nil {
                 fmt.Println(err)
             }
@@ -44,4 +55,29 @@ func normalizeInput(text string) []string {
 
 func prompt() {
     fmt.Print("Pokedex > ")
+}
+
+func getCommands() map[string]cliCommand {
+    return map[string]cliCommand {
+        "help": {
+            name: "help",
+            description: "Show the help message",
+            callback: commandHelp,
+        },
+        "exit": {
+            name: "exit",
+            description: "Exit the Pokedex",
+            callback: commandExit,
+        },
+        "map": {
+            name: "map",
+            description: "List a page of locations in the world. Repeated use gets more pages.",
+            callback: commandMap,
+        },
+        "mapb": {
+            name: "mapb",
+            description: `List the previous page of locations in the world. Repeated use goes further back.`,
+            callback: commandMapB,
+        },
+    }
 }

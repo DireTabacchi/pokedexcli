@@ -19,17 +19,46 @@ type location struct {
     Url string
 }
 
+type locationDetailed struct {
+    Name string
+    PokemonEncounters []struct{
+        Pokemon pokemonResource `json:"pokemon"`
+    } `json:"pokemon_encounters"`
+}
+
 func (ll locationList) String() string {
     var llString string
-    llString += fmt.Sprintln("locationList{")
-
-    llString += fmt.Sprintln("Next:", ll.Next)
-    llString += fmt.Sprintln("Previous:", ll.Previous)
-    llString += fmt.Sprintln("Locations:", ll.Locations)
-
-    llString += fmt.Sprintln("}")
+    llString += fmt.Sprintln("locationList{", ll.Next, ll.Previous, ll.Locations, "}")
     
     return llString
+}
+
+func (c *Client) GetLocation(locName *string) (locationDetailed, error) {
+    endpoint := baseURL + "/location-area/" + *locName
+
+    req, err := http.NewRequest("GET", endpoint, nil)
+    if err != nil {
+        return locationDetailed{}, err
+    }
+
+    res, err := c.httpClient.Do(req)
+    if err != nil {
+        return locationDetailed{}, err
+    }
+    defer res.Body.Close()
+
+    data, err := io.ReadAll(res.Body)
+    if err != nil {
+        return locationDetailed{}, err
+    }
+
+    location := locationDetailed{}
+    err = json.Unmarshal(data, &location)
+    if err != nil {
+        return locationDetailed{}, err
+    }
+
+    return location, nil
 }
 
 func (c *Client) ListLocations(pageURL *string) (locationList, error) {

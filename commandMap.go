@@ -11,7 +11,7 @@ type mapState struct {
     Previous    *string
 }
 
-func commandMap(ds *dexState) error {
+func commandMap(ds *dexState, args ...string) error {
     locations, err := ds.pokeapiClient.ListLocations(ds.mapState.Next)
     if err != nil {
         return err
@@ -27,9 +27,9 @@ func commandMap(ds *dexState) error {
     return nil
 }
 
-func commandMapB(ds *dexState) error {
+func commandMapB(ds *dexState, args ...string) error {
     if ds.mapState.Previous == nil {
-        return errors.New("Already on the first page!")
+        return errors.New("Already on the first page.")
     }
 
     locations, err := ds.pokeapiClient.ListLocations(ds.mapState.Previous)

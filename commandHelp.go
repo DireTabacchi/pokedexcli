@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func commandHelp(ds *dexState) error {
+func commandHelp(ds *dexState, args ...string) error {
     fmt.Println("\nWelcome to the Pokedex!")
     fmt.Printf("Usage:\n\n")
     for _, command := range getCommands() {

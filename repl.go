@@ -12,7 +12,7 @@ import (
 type cliCommand struct {
     name        string
     description string
-    callback    func(*dexState) error
+    callback    func(*dexState, ...string) error
 }
 
 type dexState struct {
@@ -35,7 +35,7 @@ func startRepl(ds *dexState) {
 
         command, exists := getCommands()[comName]
         if exists {
-            err := command.callback(ds)
+            err := command.callback(ds, comArgs[1:]...)
             if err != nil {
                 fmt.Println(err)
             }
@@ -76,8 +76,13 @@ func getCommands() map[string]cliCommand {
         },
         "mapb": {
             name: "mapb",
-            description: `List the previous page of locations in the world. Repeated use goes further back.`,
+            description: "List the previous page of locations in the world. Repeated use goes further back.",
             callback: commandMapB,
+        },
+        "explore": {
+            name: "explore",
+            description: "explore <area_name>; List the Pokemon found in area_name.",
+            callback: commandExplore,
         },
     }
 }

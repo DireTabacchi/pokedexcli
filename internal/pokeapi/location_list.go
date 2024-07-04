@@ -36,6 +36,16 @@ func (ll locationList) String() string {
 func (c *Client) GetLocation(locName *string) (locationDetailed, error) {
     endpoint := baseURL + "/location-area/" + *locName
 
+    if val, ok := c.cache.Get(endpoint); ok {
+        location := locationDetailed{}
+        err := json.Unmarshal(val, &location)
+        if err != nil {
+            return locationDetailed{}, err
+        }
+
+        return location, nil
+    }
+
     req, err := http.NewRequest("GET", endpoint, nil)
     if err != nil {
         return locationDetailed{}, err
@@ -57,6 +67,8 @@ func (c *Client) GetLocation(locName *string) (locationDetailed, error) {
     if err != nil {
         return locationDetailed{}, err
     }
+
+    c.cache.Add(endpoint, data)
 
     return location, nil
 }

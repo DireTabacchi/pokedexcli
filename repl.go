@@ -5,27 +5,28 @@ import (
     "fmt"
     "os"
     "strings"
+
+    "github.com/DireTabacchi/pokedexcli/internal/pokeapi"
 )
 
 type cliCommand struct {
-    name string
+    name        string
     description string
-    callback func(*dexState) error
+    callback    func(*dexState) error
 }
 
 type dexState struct {
-    mapState mapState
+    pokeapiClient   pokeapi.Client
+    mapState        mapState
 }
 
-func startRepl() {
+func startRepl(ds *dexState) {
     reader := bufio.NewScanner(os.Stdin)
-    var curState dexState
     for {
         prompt()
         reader.Scan()
 
         comArgs := normalizeInput(reader.Text())
-
         if len(comArgs) == 0 {
             continue
         }
@@ -33,15 +34,14 @@ func startRepl() {
         comName := comArgs[0]
 
         command, exists := getCommands()[comName]
-
         if exists {
-            err := command.callback(&curState)
+            err := command.callback(ds)
             if err != nil {
                 fmt.Println(err)
             }
             continue
         } else {
-            fmt.Printf("'%s' is not a command. Type 'help' for a list of commands.\n", comName)
+            fmt.Printf("Unknown command '%s'. Type 'help' for a list of commands.\n", comName)
             continue
         }
     }

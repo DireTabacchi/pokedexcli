@@ -35,14 +35,14 @@ type Pokemon struct {
 }
 
 func (p Pokemon) String() string {
-    pstring := "pokemon{"
-    pstring += fmt.Sprintf("ID: %d Name: %s BaseExp: %d Height: %d Weight: %d IsDefault: %t ",
+    pstring := "pokemon{\n"
+    pstring += fmt.Sprintf("ID: %d\nName: %s\nBaseExp: %d\nHeight: %d\nWeight: %d\nIsDefault: %t\n",
         p.ID, p.Name, p.BaseExp, p.Height, p.Weight, p.IsDefault,
     )
-    pstring += fmt.Sprintf("Abilities: %+v Forms: %+v HeldItems: %+v LocationAreaEncounters: %s ",
+    pstring += fmt.Sprintf("Abilities: %+v\nForms: %+v\nHeldItems: %+v\nLocationAreaEncounters: %s\n",
         p.Abilities, p.Forms, p.HeldItems, p.LocationAreaEncounters,
     )
-    pstring += fmt.Sprintf("Moves: %+v Species: %+v Stats: %+v Types: %+v",
+    pstring += fmt.Sprintf("Moves: %+v\nSpecies: %+v\nStats: %+v\nTypes: %+v\n",
         p.Moves, p.Species, p.Stats, p.Types,
     )
     pstring += "}"

@@ -18,6 +18,7 @@ type cliCommand struct {
 type dexState struct {
     pokeapiClient   pokeapi.Client
     mapState        mapState
+    pokedex         map[string]pokeapi.Pokemon
 }
 
 func startRepl(ds *dexState) {
@@ -88,6 +89,11 @@ func getCommands() map[string]cliCommand {
             name: "catch",
             description: "catch <pokemon_name>; Attempt to cath the Pokemon pokemon_name.",
             callback: commandCatch,
+        },
+        "inspect": {
+            name: "inspect",
+            description: "inspect <pokemon_name>; View the stats of the caught Pokemon pokemon_name.",
+            callback: commandInspect,
         },
     }
 }

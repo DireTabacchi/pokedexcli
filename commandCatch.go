@@ -28,8 +28,8 @@ func commandCatch(ds *dexState, args ...string) error {
 
     fmt.Printf("%s was caught!\n", pokemon.Name)
 
-    if _, exists := ds.pokeapiClient.Pokedex[pokemon.Name]; !exists {
-        ds.pokeapiClient.Pokedex[pokemon.Name] = pokemon
+    if _, exists := ds.pokedex[pokemon.Name]; !exists {
+        ds.pokedex[pokemon.Name] = pokemon
         fmt.Printf("%s has been added to the Pokedex...\n", pokemon.Name)
     }
 

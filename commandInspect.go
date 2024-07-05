@@ -19,9 +19,9 @@ func commandInspect(ds *dexState, args ...string) error {
     var inspection string
     inspection += fmt.Sprintf("Name: %s\nHeight: %d\nWeight: %d\n", mon.Name, mon.Height, mon.Weight)
 
-    inspection += fmt.Sprintln("Stats:")
+    inspection += fmt.Sprintf("Experience: %d\nStats:\n", mon.BaseExp)
     for _, stat := range mon.Stats {
-        inspection += fmt.Sprintf(" - %s: %d\n", stat.Stat.Name, stat.BaseStat)
+        inspection += fmt.Sprintf("  - %s: %d\n", stat.Stat.Name, stat.BaseStat)
     }
 
     inspection += fmt.Sprintln("Types:")

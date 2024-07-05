@@ -2,6 +2,8 @@ package pokeapi
 
 import (
 	"encoding/json"
+    "errors"
+    "fmt"
 	"io"
 	"net/http"
 )
@@ -32,6 +34,10 @@ func (c *Client) GetPokemon(pokename string) (Pokemon, error) {
     data, err := io.ReadAll(res.Body)
     if err != nil {
         return Pokemon{}, nil
+    }
+
+    if string(data) == "Not Found" {
+        return Pokemon{}, errors.New(fmt.Sprintf("Cannot find Pokemon '%s'.", pokename))
     }
 
     mon := Pokemon{}

@@ -16,8 +16,6 @@ func commandInspect(ds *dexState, args ...string) error {
         return errors.New("You have not caught that Pokemon yet.")
     }
 
-    fmt.Println(mon)
-
     var inspection string
     inspection += fmt.Sprintf("Name: %s\nHeight: %d\nWeight: %d\n", mon.Name, mon.Height, mon.Weight)
 
@@ -31,7 +29,7 @@ func commandInspect(ds *dexState, args ...string) error {
         inspection += fmt.Sprintf("  - %s\n", t.Type.Name)
     }
 
-    fmt.Println(inspection)
+    fmt.Print(inspection)
 
     return nil
 }
